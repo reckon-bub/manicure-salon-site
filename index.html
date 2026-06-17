@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NailArt — Идеальный маникюр</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ===================== RESET & BASE ===================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --c-white:   #FFFFFF;
+      --c-bg:      #FAFAFA;
+      --c-black:   #1A1A1A;
+      --c-orange:  #FF6B00;
+      --c-graphite:#2D2D2D;
+      --c-gray:    #555555;
+      --c-border:  #EBEBEB;
+      --font-head: 'Montserrat', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --transition: 0.25s ease;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--c-black);
+      background: var(--c-white);
+      overflow-x: hidden;
+    }
+
+    /* ===================== HEADER ===================== */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--c-white);
+      transition: box-shadow var(--transition), background var(--transition);
+    }
+
+    .header--scrolled {
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+    }
+
+    .header__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* --- Logo --- */
+    .logo {
+      text-decoration: none;
+      display: flex;
+      align-items: baseline;
+      gap: 1px;
+      user-select: none;
+    }
+
+    .logo__nail {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 22px;
+      color: var(--c-black);
+      letter-spacing: -0.5px;
+    }
+
+    .logo__art {
+      font-family: var(--font-head);
+      font-weight: 300;
+      font-size: 22px;
+      color: var(--c-orange);
+      letter-spacing: 1px;
+      -webkit-text-stroke: 1px var(--c-orange);
+    }
+
+    .logo__dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--c-orange);
+      margin-left: 3px;
+      margin-bottom: 2px;
+      flex-shrink: 0;
+    }
+
+    /* --- Nav --- */
+    .nav__list {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav__link {
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 15px;
+      color: var(--c-black);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 3px;
+      transition: color var(--transition);
+    }
+
+    .nav__link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--c-orange);
+      border-radius: 2px;
+      transition: width var(--transition);
+    }
+
+    .nav__link:hover { color: var(--c-orange); }
+    .nav__link:hover::after { width: 100%; }
+
+    /* --- CTA button --- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition), color var(--transition);
+    }
+
+    .btn--orange {
+      background: var(--c-orange);
+      color: var(--c-white);
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+    }
+
+    .btn--orange:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(255,107,0,0.35);
+    }
+
+    .btn--orange:active { transform: scale(0.98); }
+
+    .btn--dark {
+      background: var(--c-graphite);
+      color: var(--c-white);
+      padding: 16px 32px;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+    }
+
+    .btn--dark:hover {
+      background: #1a1a1a;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    }
+
+    .btn--dark:active { transform: translateY(0); }
+
+    /* --- Burger --- */
+    .header__burger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 40px;
+      height: 40px;
+      padding: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 200;
+    }
+
+    .header__burger span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--c-black);
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease;
+      transform-origin: center;
+    }
+
+    .header__burger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .header__burger.is-open span:nth-child(2) { opacity: 0; width: 0; }
+    .header__burger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* --- Mobile Drawer --- */
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: min(320px, 85vw);
+      height: 100dvh;
+      background: var(--c-white);
+      box-shadow: -8px 0 40px rgba(0,0,0,0.12);
+      z-index: 150;
+      transition: right 0.35s cubic-bezier(0.4,0,0.2,1);
+      display: flex;
+      flex-direction: column;
+      padding: 96px 32px 40px;
+      gap: 0;
+    }
+
+    .drawer.is-open { right: 0; }
+
+    .drawer__nav { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+
+    .drawer__link {
+      display: block;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 26px;
+      color: var(--c-black);
+      text-decoration: none;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--c-border);
+      transition: color var(--transition), padding-left var(--transition);
+    }
+
+    .drawer__link:hover { color: var(--c-orange); padding-left: 8px; }
+
+    .drawer__cta { margin-top: 40px; }
+    .drawer__cta .btn--orange { width: 100%; justify-content: center; padding: 16px; font-size: 15px; }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 140;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      backdrop-filter: blur(2px);
+    }
+
+    .overlay.is-open { opacity: 1; pointer-events: all; }
+
+    /* ===================== HERO ===================== */
+    .hero {
+      min-height: calc(100vh - 72px);
+      background: var(--c-white);
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* BG decorative SVG layer */
+    .hero__bg-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 120px 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+    }
+
+    /* --- Hero Left --- */
+    .hero__content { display: flex; flex-direction: column; gap: 28px; }
+
+    .hero__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--c-orange);
+      opacity: 0;
+      animation: fadeInUp 0.6s ease 0.1s forwards;
+    }
+
+    .hero__eyebrow::before {
+      content: '';
+      width: 28px;
+      height: 2px;
+      background: var(--c-orange);
+      border-radius: 2px;
+    }
+
+    .hero__title {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(38px, 5vw, 64px);
+      line-height: 1.1;
+      color: var(--c-black);
+      letter-spacing: -1.5px;
+      opacity: 0;
+      animation: fadeInUp 0.7s ease 0.2s forwards;
+    }
+
+    .hero__title-highlight {
+      position: relative;
+      display: inline-block;
+      color: var(--c-black);
+    }
+
+    .hero__title-highlight::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: var(--c-orange);
+      border-radius: 3px;
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: underlineGrow 0.5s ease 0.9s forwards;
+    }
+
+    .hero__desc {
+      font-size: 18px;
+      line-height: 1.7;
+      color: var(--c-gray);
+      max-width: 460px;
+      opacity: 0;
+      animation: fadeInUp 0.7s ease 0.35s forwards;
+    }
+
+    .hero__actions {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeInUp 0.7s ease 0.5s forwards;
+    }
+
+    .hero__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--c-black);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+
+    .hero__link:hover { color: var(--c-orange); }
+
+    .hero__link-arrow {
+      display: inline-block;
+      transition: transform var(--transition);
+    }
+
+    .hero__link:hover .hero__link-arrow { transform: translateX(5px); }
+
+    .hero__stats {
+      display: flex;
+      gap: 32px;
+      padding-top: 8px;
+      opacity: 0;
+      animation: fadeInUp 0.7s ease 0.65s forwards;
+    }
+
+    .hero__stat-num {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 28px;
+      color: var(--c-black);
+      letter-spacing: -1px;
+    }
+
+    .hero__stat-num span { color: var(--c-orange); }
+
+    .hero__stat-label {
+      font-size: 12px;
+      color: var(--c-gray);
+      font-weight: 500;
+      margin-top: 2px;
+      line-height: 1.4;
+      max-width: 90px;
+    }
+
+    /* --- Hero Right (Visual) --- */
+    .hero__visual {
+      position: relative;
+      height: 520px;
+      opacity: 0;
+      animation: fadeInRight 0.8s ease 0.4s forwards;
+    }
+
+    /* Main illustration card */
+    .hero__card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 320px;
+      height: 380px;
+      background: linear-gradient(145deg, #f8f3ef 0%, #f0e8e0 100%);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(255,107,0,0.12), 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    /* SVG line-art girl placeholder */
+    .hero__illustration {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Floating orange circle */
+    .hero__circle {
+      position: absolute;
+      top: 12%;
+      right: 6%;
+      width: 100px;
+      height: 100px;
+      background: var(--c-orange);
+      border-radius: 50%;
+      animation: floatY 4s ease-in-out infinite;
+      opacity: 0.9;
+    }
+
+    .hero__circle::after {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      border-radius: 50%;
+      border: 2px dashed rgba(255,255,255,0.5);
+      animation: rotateSlow 12s linear infinite;
+    }
+
+    /* Small black circle */
+    .hero__circle-sm {
+      position: absolute;
+      bottom: 22%;
+      left: 4%;
+      width: 44px;
+      height: 44px;
+      background: var(--c-black);
+      border-radius: 50%;
+      animation: floatY 5s ease-in-out 1s infinite;
+    }
+
+    /* Dot grid */
+    .hero__dots {
+      position: absolute;
+      top: 6%;
+      left: 2%;
+    }
+
+    /* Tag badge */
+    .hero__badge {
+      position: absolute;
+      bottom: 14%;
+      right: 0%;
+      background: var(--c-white);
+      border-radius: 14px;
+      padding: 14px 18px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: floatY 3.5s ease-in-out 0.8s infinite;
+      white-space: nowrap;
+    }
+
+    .hero__badge-icon {
+      width: 36px;
+      height: 36px;
+      background: rgba(255,107,0,0.12);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .hero__badge-text-top { font-weight: 700; font-size: 14px; color: var(--c-black); }
+    .hero__badge-text-bot { font-size: 11px; color: var(--c-gray); }
+
+    /* Top-left card */
+    .hero__badge-2 {
+      position: absolute;
+      top: 10%;
+      left: -4%;
+      background: var(--c-black);
+      color: var(--c-white);
+      border-radius: 14px;
+      padding: 12px 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+      animation: floatY 4.5s ease-in-out 1.5s infinite;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero__badge-2 .hero__badge-icon {
+      background: rgba(255,107,0,0.2);
+      font-size: 16px;
+    }
+
+    .hero__badge-2 .hero__badge-text-top { color: var(--c-white); }
+    .hero__badge-2 .hero__badge-text-bot { color: rgba(255,255,255,0.55); }
+
+    /* Curved line decor */
+    .hero__line-decor {
+      position: absolute;
+      bottom: 30%;
+      right: -8%;
+      pointer-events: none;
+      animation: rotateSlowAlt 20s linear infinite;
+      opacity: 0.35;
+    }
+
+    /* ===================== ANIMATIONS ===================== */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes underlineGrow {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
+    }
+
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-14px); }
+    }
+
+    @keyframes rotateSlow {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    @keyframes rotateSlowAlt {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(-360deg); }
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50%       { opacity: 1; transform: scale(1.3); }
+    }
+
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 1024px) {
+      .hero__inner { gap: 40px; padding: 80px 24px; }
+      .hero__visual { height: 440px; }
+      .hero__card { width: 280px; height: 330px; }
+    }
+
+    @media (max-width: 768px) {
+      .nav__list, .header__cta { display: none; }
+      .header__burger { display: flex; }
+
+      .hero__inner {
+        grid-template-columns: 1fr;
+        padding: 60px 24px 80px;
+        gap: 56px;
+      }
+
+      .hero__visual { height: 360px; order: -1; }
+      .hero__card { width: 240px; height: 290px; }
+      .hero__circle { width: 72px; height: 72px; top: 5%; right: 8%; }
+      .hero__badge { display: none; }
+      .hero__badge-2 { display: none; }
+
+      .hero__title { font-size: clamp(34px, 8vw, 48px); }
+      .hero__stats { gap: 24px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero__inner { padding: 48px 20px 64px; }
+      .hero__visual { height: 300px; }
+      .hero__card { width: 200px; height: 250px; }
+      .hero__desc { font-size: 16px; }
+      .hero__actions { flex-direction: column; align-items: flex-start; gap: 16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* ===================== DARK MODE TRANSITION ===================== */
+    body { transition: background 0.8s ease; }
+    body.dark-mode { background: #111111; }
+
+    /* ===================== BLOCK 3: MISSION ===================== */
+    .mission {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      background: #111111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .mission__canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      cursor: crosshair;
+    }
+
+    .mission__inner {
+      position: relative;
+      z-index: 10;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 120px 40px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 36px;
+    }
+
+    .mission__label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--c-orange);
+    }
+
+    .mission__label::before,
+    .mission__label::after {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: var(--c-orange);
+      opacity: 0.6;
+    }
+
+    .mission__title {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(42px, 7vw, 88px);
+      line-height: 1.05;
+      color: #FFFFFF;
+      letter-spacing: -2px;
+    }
+
+    .mission__title-glow {
+      color: var(--c-orange);
+      text-shadow:
+        0 0 20px rgba(255,107,0,0.8),
+        0 0 40px rgba(255,107,0,0.4),
+        0 0 80px rgba(255,107,0,0.2);
+      animation: glowPulse 2.8s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% {
+        text-shadow:
+          0 0 20px rgba(255,107,0,0.8),
+          0 0 40px rgba(255,107,0,0.4),
+          0 0 80px rgba(255,107,0,0.2);
+      }
+      50% {
+        text-shadow:
+          0 0 30px rgba(255,107,0,1),
+          0 0 60px rgba(255,107,0,0.6),
+          0 0 120px rgba(255,107,0,0.3);
+      }
+    }
+
+    .mission__divider {
+      width: 60px;
+      height: 3px;
+      background: var(--c-orange);
+      border-radius: 3px;
+    }
+
+    .mission__desc {
+      font-size: clamp(17px, 2.2vw, 21px);
+      line-height: 1.75;
+      color: #CCCCCC;
+      max-width: 640px;
+    }
+
+    .mission__desc strong { color: #FFFFFF; font-weight: 600; }
+
+    .mission__pillars {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 12px;
+    }
+
+    .mission__pillar {
+      border: 1px solid rgba(255,107,0,0.25);
+      border-radius: 50px;
+      padding: 10px 22px;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.75);
+      letter-spacing: 0.5px;
+      background: rgba(255,107,0,0.05);
+      transition: all 0.3s ease;
+    }
+
+    .mission__pillar:hover {
+      background: rgba(255,107,0,0.15);
+      border-color: rgba(255,107,0,0.6);
+      color: #FFFFFF;
+      transform: translateY(-2px);
+    }
+
+    .mission__reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      filter: blur(8px);
+      transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
+    }
+
+    .mission__reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    .mission__reveal:nth-child(1) { transition-delay: 0s; }
+    .mission__reveal:nth-child(2) { transition-delay: 0.12s; }
+    .mission__reveal:nth-child(3) { transition-delay: 0.22s; }
+    .mission__reveal:nth-child(4) { transition-delay: 0.34s; }
+    .mission__reveal:nth-child(5) { transition-delay: 0.46s; }
+    .mission__reveal:nth-child(6) { transition-delay: 0.58s; }
+
+    .mission__hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .mission__hint svg { animation: bounceDown 1.6s ease-in-out infinite; }
+
+    @keyframes bounceDown {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(5px); }
+    }
+
+    @media (max-width: 768px) {
+      .mission__inner { padding: 80px 24px 100px; gap: 28px; }
+      .mission__title { letter-spacing: -1px; }
+    }
+
+    @media (max-width: 480px) {
+      .mission__inner { padding: 60px 20px 80px; }
+    }
+
+    /* ===================== BLOCK 4: SERVICES ===================== */
+    .services {
+      background: #FFFFFF;
+      padding: 120px 0 140px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .services::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: linear-gradient(to bottom, #111111, transparent);
+      pointer-events: none;
+    }
+
+    .services__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .services__header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .services__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--c-orange);
+      margin-bottom: 16px;
+    }
+
+    .services__eyebrow::before,
+    .services__eyebrow::after {
+      content: '';
+      width: 28px;
+      height: 1px;
+      background: var(--c-orange);
+    }
+
+    .services__title {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(32px, 4.5vw, 56px);
+      color: var(--c-black);
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .services__title span {
+      position: relative;
+      display: inline-block;
+    }
+
+    .services__title span::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: var(--c-orange);
+      border-radius: 3px;
+    }
+
+    .services__subtitle {
+      font-size: 17px;
+      color: var(--c-gray);
+      line-height: 1.6;
+    }
+
+    /* --- Filter tabs --- */
+    .services__filters {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 56px;
+      flex-wrap: wrap;
+    }
+
+    .services__filter-btn {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 11px 26px;
+      border-radius: 50px;
+      border: 1.5px solid var(--c-border);
+      background: transparent;
+      color: var(--c-gray);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      letter-spacing: 0.3px;
+    }
+
+    .services__filter-btn:hover {
+      border-color: var(--c-orange);
+      color: var(--c-orange);
+    }
+
+    .services__filter-btn.is-active {
+      background: var(--c-orange);
+      border-color: var(--c-orange);
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(255,107,0,0.3);
+    }
+
+    /* --- Cards grid --- */
+    .services__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .service-card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      padding: 36px 32px 32px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.07), 0 2px 8px rgba(0,0,0,0.04);
+      position: relative;
+      transform-style: preserve-3d;
+      will-change: transform;
+      transition: box-shadow 0.3s ease, opacity 0.4s ease, transform 0.4s ease;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      border: 1.5px solid transparent;
+      background: linear-gradient(135deg, rgba(255,107,0,0.15), transparent 60%) border-box;
+      -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: destination-out;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .service-card:hover::before { opacity: 1; }
+
+    .service-card:hover {
+      box-shadow: 0 32px 64px rgba(0,0,0,0.13), 0 8px 20px rgba(255,107,0,0.1);
+    }
+
+    /* Stagger reveal */
+    .service-card.card-hidden {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    .service-card.card-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .service-card.is-filtering {
+      opacity: 0;
+      transform: translateY(20px) scale(0.97);
+      pointer-events: none;
+    }
+
+    .service-card__icon-wrap {
+      width: 56px;
+      height: 56px;
+      background: rgba(255,107,0,0.1);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      transform: translateZ(0);
+      transition: transform 0.3s ease, background 0.3s ease;
+      will-change: transform;
+    }
+
+    .service-card:hover .service-card__icon-wrap {
+      background: rgba(255,107,0,0.18);
+    }
+
+    .service-card__icon { width: 28px; height: 28px; color: var(--c-orange); }
+
+    .service-card__tag {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--c-orange);
+      background: rgba(255,107,0,0.1);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .service-card__title {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--c-black);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .service-card__desc {
+      font-size: 14px;
+      color: var(--c-gray);
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .service-card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .service-card__price {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 22px;
+      color: var(--c-orange);
+      letter-spacing: -0.5px;
+    }
+
+    .service-card__price span {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--c-gray);
+      margin-left: 3px;
+    }
+
+    .service-card__btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--c-orange);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      flex-shrink: 0;
+    }
+
+    .service-card__btn:hover {
+      transform: scale(1.12);
+      box-shadow: 0 6px 18px rgba(255,107,0,0.4);
+    }
+
+    .service-card__btn svg { color: #fff; }
+
+    /* Popular badge */
+    .service-card--popular::after {
+      content: '🔥 Хит';
+      position: absolute;
+      top: -1px;
+      left: 28px;
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--c-black);
+      color: #fff;
+      padding: 5px 12px;
+      border-radius: 0 0 10px 10px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Duration badge */
+    .service-card__duration {
+      font-size: 12px;
+      color: rgba(85,85,85,0.7);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 20px;
+    }
+
+    /* Bottom CTA */
+    .services__bottom {
+      text-align: center;
+      margin-top: 64px;
+    }
+
+    .services__bottom-text {
+      font-size: 16px;
+      color: var(--c-gray);
+      margin-bottom: 24px;
+    }
+
+    /* Scroll reveal for section header */
+    .services__header-reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .services__header-reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1024px) {
+      .services__grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    }
+
+    @media (max-width: 768px) {
+      .services { padding: 80px 0 100px; }
+      .services__grid { grid-template-columns: 1fr; gap: 16px; }
+      .service-card { padding: 28px 24px 24px; }
+    }
+
+    @media (max-width: 480px) {
+      .services { padding: 60px 0 80px; }
+      .services__filters { gap: 6px; }
+      .services__filter-btn { padding: 9px 18px; font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== OVERLAY ========== -->
+  <div class="overlay" id="overlay" aria-hidden="true"></div>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header" id="header">
+    <div class="header__inner">
+
+      <!-- Logo -->
+      <a href="#" class="logo" aria-label="NailArt — на главную">
+        <span class="logo__nail">Nail</span><span class="logo__art">Art</span>
+        <span class="logo__dot" aria-hidden="true"></span>
+      </a>
+
+      <!-- Desktop nav -->
+      <nav aria-label="Основная навигация">
+        <ul class="nav__list">
+          <li><a href="#" class="nav__link">Главная</a></li>
+          <li><a href="#services" class="nav__link">Услуги</a></li>
+          <li><a href="#portfolio" class="nav__link">Портфолио</a></li>
+          <li><a href="#masters" class="nav__link">Мастера</a></li>
+          <li><a href="#pricing" class="nav__link">Цены</a></li>
+        </ul>
+      </nav>
+
+      <!-- Desktop CTA -->
+      <a href="#booking" class="btn btn--orange header__cta">Записаться онлайн</a>
+
+      <!-- Burger button -->
+      <button class="header__burger" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="drawer">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== MOBILE DRAWER ========== -->
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <ul class="drawer__nav" role="list">
+      <li><a href="#" class="drawer__link" data-close-drawer>Главная</a></li>
+      <li><a href="#services" class="drawer__link" data-close-drawer>Услуги</a></li>
+      <li><a href="#portfolio" class="drawer__link" data-close-drawer>Портфолио</a></li>
+      <li><a href="#masters" class="drawer__link" data-close-drawer>Мастера</a></li>
+      <li><a href="#pricing" class="drawer__link" data-close-drawer>Цены</a></li>
+    </ul>
+    <div class="drawer__cta">
+      <a href="#booking" class="btn btn--orange" data-close-drawer>Записаться онлайн</a>
+    </div>
+  </aside>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero" aria-label="Главный экран">
+
+    <!-- Background decorative SVG -->
+    <svg class="hero__bg-svg" viewBox="0 0 1440 800" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+      <!-- large faint circle -->
+      <circle cx="1200" cy="120" r="320" stroke="#FF6B00" stroke-width="1" stroke-dasharray="6 10" opacity="0.07"/>
+      <!-- small stroke circle -->
+      <circle cx="100" cy="680" r="80" stroke="#1A1A1A" stroke-width="1" opacity="0.06"/>
+      <!-- diagonal line pattern -->
+      <line x1="0" y1="200" x2="200" y2="0" stroke="#FF6B00" stroke-width="1" opacity="0.06"/>
+      <line x1="0" y1="260" x2="260" y2="0" stroke="#FF6B00" stroke-width="1" opacity="0.05"/>
+      <line x1="0" y1="320" x2="320" y2="0" stroke="#FF6B00" stroke-width="1" opacity="0.04"/>
+      <!-- star-like sparkles -->
+      <g opacity="0.25" fill="#FF6B00">
+        <path d="M80 160 L83 153 L86 160 L93 163 L86 166 L83 173 L80 166 L73 163Z"/>
+        <path d="M1360 580 L1363 573 L1366 580 L1373 583 L1366 586 L1363 593 L1360 586 L1353 583Z"/>
+        <path d="M320 700 L322 695 L324 700 L329 702 L324 704 L322 709 L320 704 L315 702Z"/>
+      </g>
+      <!-- cross marks -->
+      <g stroke="#1A1A1A" stroke-width="1.5" opacity="0.1">
+        <line x1="1340" y1="200" x2="1350" y2="210"/><line x1="1350" y1="200" x2="1340" y2="210"/>
+        <line x1="60" y1="400" x2="70" y2="410"/><line x1="70" y1="400" x2="60" y2="410"/>
+        <line x1="700" y1="740" x2="710" y2="750"/><line x1="710" y1="740" x2="700" y2="750"/>
+      </g>
+    </svg>
+
+    <div class="hero__inner">
+
+      <!-- LEFT: Content -->
+      <div class="hero__content">
+
+        <span class="hero__eyebrow">Маникюрный салон · Нха Транг</span>
+
+        <h1 class="hero__title">
+          Идеальный<br>
+          <span class="hero__title-highlight">маникюр</span><br>
+          для твоего образа.
+        </h1>
+
+        <p class="hero__desc">
+          Забудь о сколах и долгих поисках своего мастера.
+          Мы создаём эстетику, которая держится до&nbsp;4&nbsp;недель,
+          в атмосфере полного релакса.
+        </p>
+
+        <div class="hero__actions">
+          <a href="#booking" class="btn btn--dark">Выбрать время</a>
+          <a href="#portfolio" class="hero__link">
+            Посмотреть работы
+            <span class="hero__link-arrow" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M10 4l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </a>
+        </div>
+
+        <div class="hero__stats">
+          <div>
+            <div class="hero__stat-num">4<span>к+</span></div>
+            <div class="hero__stat-label">довольных клиенток</div>
+          </div>
+          <div>
+            <div class="hero__stat-num">8<span>+</span></div>
+            <div class="hero__stat-label">мастеров в команде</div>
+          </div>
+          <div>
+            <div class="hero__stat-num">4<span>нед</span></div>
+            <div class="hero__stat-label">держится покрытие</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Visual -->
+      <div class="hero__visual" aria-hidden="true">
+
+        <!-- Dot grid -->
+        <svg class="hero__dots" width="72" height="72" viewBox="0 0 72 72">
+          <g fill="#1A1A1A" opacity="0.18">
+            <circle cx="6"  cy="6"  r="2.5"/><circle cx="24" cy="6"  r="2.5"/><circle cx="42" cy="6"  r="2.5"/><circle cx="60" cy="6"  r="2.5"/>
+            <circle cx="6"  cy="24" r="2.5"/><circle cx="24" cy="24" r="2.5"/><circle cx="42" cy="24" r="2.5"/><circle cx="60" cy="24" r="2.5"/>
+            <circle cx="6"  cy="42" r="2.5"/><circle cx="24" cy="42" r="2.5"/><circle cx="42" cy="42" r="2.5"/><circle cx="60" cy="42" r="2.5"/>
+            <circle cx="6"  cy="60" r="2.5"/><circle cx="24" cy="60" r="2.5"/><circle cx="42" cy="60" r="2.5"/><circle cx="60" cy="60" r="2.5"/>
+          </g>
+        </svg>
+
+        <!-- Orange circle -->
+        <div class="hero__circle"></div>
+
+        <!-- Small black circle -->
+        <div class="hero__circle-sm"></div>
+
+        <!-- Main illustration card -->
+        <div class="hero__card">
+          <!-- SVG line-art girl with nail -->
+          <svg class="hero__illustration" viewBox="0 0 320 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- background soft warm circle -->
+            <circle cx="160" cy="190" r="130" fill="#F5E8DC" opacity="0.6"/>
+            <!-- body / torso -->
+            <path d="M100 380 Q100 290 120 270 Q140 250 160 248 Q180 250 200 270 Q220 290 220 380Z" fill="#2D2D2D" opacity="0.85"/>
+            <!-- neck -->
+            <rect x="148" y="215" width="24" height="36" rx="12" fill="#E8C4A0"/>
+            <!-- head -->
+            <ellipse cx="160" cy="195" rx="42" ry="48" fill="#E8C4A0"/>
+            <!-- hair -->
+            <path d="M118 185 Q116 150 130 135 Q145 118 160 116 Q175 118 190 135 Q204 150 202 185 Q196 165 180 158 Q160 155 140 158 Q124 165 118 185Z" fill="#1A1A1A"/>
+            <!-- hair bun / side -->
+            <path d="M115 172 Q108 160 112 148 Q120 138 132 140 Q122 150 120 165Z" fill="#1A1A1A"/>
+            <!-- eyebrow left -->
+            <path d="M140 181 Q147 177 155 179" stroke="#1A1A1A" stroke-width="2.2" stroke-linecap="round"/>
+            <!-- eyebrow right -->
+            <path d="M165 179 Q173 177 180 181" stroke="#1A1A1A" stroke-width="2.2" stroke-linecap="round"/>
+            <!-- eyes -->
+            <ellipse cx="148" cy="189" rx="6" ry="7" fill="#1A1A1A"/>
+            <ellipse cx="172" cy="189" rx="6" ry="7" fill="#1A1A1A"/>
+            <circle cx="150" cy="187" r="2" fill="white"/>
+            <circle cx="174" cy="187" r="2" fill="white"/>
+            <!-- nose -->
+            <path d="M157 198 Q160 203 163 198" stroke="#C49070" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <!-- smile -->
+            <path d="M152 208 Q160 215 168 208" stroke="#C49070" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+            <!-- blush -->
+            <ellipse cx="140" cy="202" rx="9" ry="5" fill="#FF6B00" opacity="0.15"/>
+            <ellipse cx="180" cy="202" rx="9" ry="5" fill="#FF6B00" opacity="0.15"/>
+            <!-- left arm / hand holding up -->
+            <path d="M120 290 Q100 270 90 240 Q85 220 95 205 Q100 200 105 205 Q100 220 105 238 Q115 260 128 278Z" fill="#E8C4A0"/>
+            <!-- hand fingers -->
+            <path d="M95 205 Q88 196 92 190 Q96 185 100 192" fill="#E8C4A0" stroke="#C49070" stroke-width="0.8"/>
+            <path d="M100 201 Q93 191 97 185 Q101 180 105 187" fill="#E8C4A0" stroke="#C49070" stroke-width="0.8"/>
+            <path d="M105 199 Q100 188 104 183 Q109 178 113 185" fill="#E8C4A0" stroke="#C49070" stroke-width="0.8"/>
+            <!-- orange nail on index finger -->
+            <ellipse cx="94" cy="189" rx="5" ry="3.5" fill="#FF6B00" transform="rotate(-20 94 189)"/>
+            <ellipse cx="100" cy="184" rx="5" ry="3.5" fill="#FF6B00" transform="rotate(-10 100 184)"/>
+            <ellipse cx="106" cy="182" rx="5" ry="3.5" fill="#FF6B00" transform="rotate(5 106 182)"/>
+            <!-- nail shine -->
+            <ellipse cx="93" cy="188" rx="1.5" ry="1" fill="white" opacity="0.6" transform="rotate(-20 93 188)"/>
+            <!-- right arm down -->
+            <path d="M200 290 Q218 275 224 255 Q228 238 220 228" fill="none" stroke="#E8C4A0" stroke-width="18" stroke-linecap="round"/>
+            <!-- decorative circles around -->
+            <circle cx="255" cy="100" r="18" fill="#FF6B00" opacity="0.15"/>
+            <circle cx="255" cy="100" r="11" fill="#FF6B00" opacity="0.2"/>
+            <circle cx="62" cy="280" r="12" fill="#1A1A1A" opacity="0.08"/>
+            <!-- small sparkles -->
+            <path d="M240 140 L242 134 L244 140 L250 142 L244 144 L242 150 L240 144 L234 142Z" fill="#FF6B00" opacity="0.5"/>
+            <path d="M68 160 L70 155 L72 160 L77 162 L72 164 L70 169 L68 164 L63 162Z" fill="#FF6B00" opacity="0.35"/>
+          </svg>
+        </div>
+
+        <!-- Floating badge bottom-right -->
+        <div class="hero__badge">
+          <div class="hero__badge-icon">💅</div>
+          <div>
+            <div class="hero__badge-text-top">Гель-лак</div>
+            <div class="hero__badge-text-bot">держится 4 нед.</div>
+          </div>
+        </div>
+
+        <!-- Floating badge top-left -->
+        <div class="hero__badge-2">
+          <div class="hero__badge-icon">⭐</div>
+          <div>
+            <div class="hero__badge-text-top">4.9 рейтинг</div>
+            <div class="hero__badge-text-bot">120 отзывов</div>
+          </div>
+        </div>
+
+        <!-- Curved decorative SVG -->
+        <svg class="hero__line-decor" width="80" height="80" viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="36" stroke="#FF6B00" stroke-width="1.5" stroke-dasharray="5 8" fill="none"/>
+          <circle cx="40" cy="40" r="24" stroke="#1A1A1A" stroke-width="1" stroke-dasharray="3 6" fill="none"/>
+        </svg>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BLOCK 3: MISSION ========== -->
+  <section class="mission" id="mission" aria-label="Миссия и философия">
+    <canvas class="mission__canvas" id="missionCanvas"></canvas>
+
+    <div class="mission__inner">
+
+      <span class="mission__label mission__reveal">Наша философия</span>
+
+      <h2 class="mission__title mission__reveal">
+        <span class="mission__title-glow">Искусство</span><br>
+        на кончиках пальцев.
+      </h2>
+
+      <div class="mission__divider mission__reveal"></div>
+
+      <p class="mission__desc mission__reveal">
+        <strong>Стерильность операционной. Точность ювелира.</strong><br>
+        Мы не просто делаем маникюр — мы создаём детали,
+        которые завершают твой безупречный образ.
+        Никаких компромиссов в качестве.
+      </p>
+
+      <div class="mission__pillars mission__reveal">
+        <span class="mission__pillar">💎 Премиальные материалы</span>
+        <span class="mission__pillar">🔬 Стерильные инструменты</span>
+        <span class="mission__pillar">⏱ Держится 4 недели</span>
+        <span class="mission__pillar">✨ 100% натуральный состав</span>
+      </div>
+
+    </div>
+
+    <div class="mission__hint mission__reveal">
+      <span>Подвигай мышью</span>
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M7 1v12M2 9l5 5 5-5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ========== BLOCK 4: SERVICES ========== -->
+  <section class="services" id="services" aria-label="Услуги и цены">
+    <div class="services__inner">
+
+      <!-- Header -->
+      <div class="services__header">
+        <div class="services__eyebrow services__header-reveal">Наши услуги</div>
+        <h2 class="services__title services__header-reveal">
+          Выбери свой <span>идеальный</span> формат
+        </h2>
+        <p class="services__subtitle services__header-reveal">
+          Каждая услуга — отдельная история красоты. Наведи на карточку.
+        </p>
+      </div>
+
+      <!-- Filter tabs -->
+      <div class="services__filters" role="tablist" aria-label="Фильтр услуг">
+        <button class="services__filter-btn is-active" data-filter="all" role="tab" aria-selected="true">Все услуги</button>
+        <button class="services__filter-btn" data-filter="manicure" role="tab" aria-selected="false">Маникюр</button>
+        <button class="services__filter-btn" data-filter="pedicure" role="tab" aria-selected="false">Педикюр</button>
+        <button class="services__filter-btn" data-filter="nails" role="tab" aria-selected="false">Наращивание</button>
+        <button class="services__filter-btn" data-filter="spa" role="tab" aria-selected="false">SPA-уход</button>
+      </div>
+
+      <!-- Cards -->
+      <div class="services__grid" id="servicesGrid">
+
+        <article class="service-card service-card--popular card-hidden" data-category="manicure">
+          <span class="service-card__tag">Маникюр</span>
+          <div class="service-card__icon-wrap">
+            <svg class="service-card__icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 21c0-4 2-7 7-9s7-5 7-9"/>
+              <path d="M5 17c1-3 3-5 5-6M10 24c1-2 2-3 4-4"/>
+              <circle cx="20" cy="6" r="2.5" fill="currentColor" stroke="none" opacity="0.3"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Комбинированный маникюр</h3>
+          <div class="service-card__duration">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="5"/><path d="M6 3v3l2 1.5"/></svg>
+            60–75 минут
+          </div>
+          <p class="service-card__desc">Идеальная чистота и подготовка пластины. Удаление кутикулы аппаратным методом.</p>
+          <div class="service-card__footer">
+            <div class="service-card__price">3 500 ₸<span>/ сеанс</span></div>
+            <button class="service-card__btn" aria-label="Подробнее">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M8 3l5 5-5 5"/></svg>
+            </button>
+          </div>
+        </article>
+
+        <article class="service-card card-hidden" data-category="manicure">
+          <span class="service-card__tag">Маникюр</span>
+          <div class="service-card__icon-wrap">
+            <svg class="service-card__icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="8" width="18" height="14" rx="3"/>
+              <path d="M9 8V6a5 5 0 0 1 10 0v2"/>
+              <circle cx="14" cy="15" r="2" fill="currentColor" opacity="0.4" stroke="none"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Гель-лак покрытие</h3>
+          <div class="service-card__duration">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="5"/><path d="M6 3v3l2 1.5"/></svg>
+            45–60 минут
+          </div>
+          <p class="service-card__desc">Стойкое покрытие Gelish / IBD. Палитра 200+ цветов. Держится до 4 недель без сколов.</p>
+          <div class="service-card__footer">
+            <div class="service-card__price">2 800 ₸<span>/ сеанс</span></div>
+            <button class="service-card__btn" aria-label="Подробнее">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M8 3l5 5-5 5"/></svg>
+            </button>
+          </div>
+        </article>
+
+        <article class="service-card card-hidden" data-category="manicure">
+          <span class="service-card__tag">Маникюр</span>
+          <div class="service-card__icon-wrap">
+            <svg class="service-card__icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 4 C8 4 4 8 4 14s4 10 10 10 10-4 10-10"/>
+              <path d="M20 4l-3 3 3 3"/>
+              <path d="M10 14h8M14 10v8"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Дизайн ногтей</h3>
+          <div class="service-card__duration">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="5"/><path d="M6 3v3l2 1.5"/></svg>
+            от 30 минут
+          </div>
+          <p class="service-card__desc">Геометрия, градиент, цветочные принты, стразы. Индивидуальный арт под твой образ.</p>
+          <div class="service-card__footer">
+            <div class="service-card__price">от 500 ₸<span>/ ноготь</span></div>
+            <button class="service-card__btn" aria-label="Подробнее">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M8 3l5 5-5 5"/></svg>
+            </button>
+          </div>
+        </article>
+
+        <article class="service-card service-card--popular card-hidden" data-category="pedicure">
+          <span class="service-card__tag">Педикюр</span>
+          <div class="service-card__icon-wrap">
+            <svg class="service-card__icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 22 C6 18 8 15 12 14 C16 13 20 11 21 7"/>
+              <path d="M9 22 C9 19 10 17 13 16"/>
+              <circle cx="21" cy="5" r="2" fill="currentColor" opacity="0.35" stroke="none"/>
+              <circle cx="17" cy="4" r="1.5" fill="currentColor" opacity="0.25" stroke="none"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Аппаратный педикюр</h3>
+          <div class="service-card__duration">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="5"/><path d="M6 3v3l2 1.5"/></svg>
+            80–90 минут
+          </div>
+          <p class="service-card__desc">Безопасная обработка пяток без воды. Удаление натоптышей, трещин и кутикулы на ногах.</p>
+          <div class="service-card__footer">
+            <div class="service-card__price">4 500 ₸<span>/ сеанс</span></div>
+            <button class="service-card__btn" aria-label="Подробнее">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M8 3l5 5-5 5"/></svg>
+            </button>
+          </div>
+        </article>
+
+        <article class="service-card card-hidden" data-category="pedicure">
+          <span class="service-card__tag">Педикюр</span>
+          <div class="service-card__icon-wrap">
+            <svg class="service-card__icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 20 Q8 12 14 10 Q20 8 22 14"/>
+              <path d="M8 22 Q10 17 14 16"/>
+              <path d="M18 8 Q20 5 22 8"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Педикюр + гель-лак</h3>
+          <div class="service-card__duration">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="5"/><path d="M6 3v3l2 1.5"/></svg>
+            90–110 минут
+          </div>
+          <p class="service-card__desc">Комплексный уход за ногами + стойкое покрытие. Идеальный результат надолго.</p>
+          <div class="service-card__footer">
+            <div class="service-card__price">5 900 ₸<span>/ сеанс</span></div>
+            <button class="service-card__btn" aria-label="Подробнее">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M8 3l5 5-5 5"/></svg>
+            </button>
+          </div>
+        </article>
+
+        <article class="service-card card-hidden" data-category="nails">
+          <span class="service-card__tag">Наращивание</span>
+          <div class="service-card__icon-wrap">
+            <svg class="service-card__icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 24 L10 10 L14 8 L18 10 L22 24"/>
+              <path d="M9 17 L19 17"/>
+              <path d="M7.5 21 L20.5 21"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Наращивание гелем</h3>
+          <div class="service-card__duration">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="5"/><path d="M6 3v3l2 1.5"/></svg>
+            2–2.5 часа
+          </div>
+          <p class="service-card__desc">Форма на твой выбор: миндаль, квадрат, балерина, стилет. Армирующий гель премиум-класса.</p>
+          <div class="service-card__footer">
+            <div class="service-card__price">7 000 ₸<span>/ сеанс</span></div>
+            <button class="service-card__btn" aria-label="Подробнее">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M8 3l5 5-5 5"/></svg>
+            </button>
+          </div>
+        </article>
+
+        <article class="service-card card-hidden" data-category="nails">
+          <span class="service-card__tag">Наращивание</span>
+          <div class="service-card__icon-wrap">
+            <svg class="service-card__icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 22 L10 12 Q12 6 14 6 Q16 6 18 12 L20 22"/>
+              <path d="M10 16 L18 16"/>
+              <circle cx="14" cy="6" r="2" fill="currentColor" opacity="0.3" stroke="none"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Коррекция наращивания</h3>
+          <div class="service-card__duration">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="5"/><path d="M6 3v3l2 1.5"/></svg>
+            1.5–2 часа
+          </div>
+          <p class="service-card__desc">Заполнение зоны роста, выравнивание формы. Рекомендуется раз в 3 недели.</p>
+          <div class="service-card__footer">
+            <div class="service-card__price">4 200 ₸<span>/ сеанс</span></div>
+            <button class="service-card__btn" aria-label="Подробнее">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M8 3l5 5-5 5"/></svg>
+            </button>
+          </div>
+        </article>
+
+        <article class="service-card card-hidden" data-category="spa">
+          <span class="service-card__tag">SPA-уход</span>
+          <div class="service-card__icon-wrap">
+            <svg class="service-card__icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 5 Q10 10 10 15 a4 4 0 0 0 8 0 Q18 10 14 5Z"/>
+              <path d="M10 15 Q7 13 6 10"/>
+              <path d="M18 15 Q21 13 22 10"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">SPA-маникюр</h3>
+          <div class="service-card__duration">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="5"/><path d="M6 3v3l2 1.5"/></svg>
+            75–90 минут
+          </div>
+          <p class="service-card__desc">Ванночка с морской солью, скраб, маска, масляный массаж рук. Полный релакс и восстановление.</p>
+          <div class="service-card__footer">
+            <div class="service-card__price">5 500 ₸<span>/ сеанс</span></div>
+            <button class="service-card__btn" aria-label="Подробнее">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M8 3l5 5-5 5"/></svg>
+            </button>
+          </div>
+        </article>
+
+        <article class="service-card card-hidden" data-category="spa">
+          <span class="service-card__tag">SPA-уход</span>
+          <div class="service-card__icon-wrap">
+            <svg class="service-card__icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="14" cy="14" r="9"/>
+              <path d="M14 9 v5 l3 3"/>
+              <path d="M9 6 Q14 4 19 6"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Парафинотерапия</h3>
+          <div class="service-card__duration">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="5"/><path d="M6 3v3l2 1.5"/></svg>
+            30 минут
+          </div>
+          <p class="service-card__desc">Питательный парафин с ароматическими маслами. Глубокое увлажнение и мягкость кожи рук.</p>
+          <div class="service-card__footer">
+            <div class="service-card__price">1 800 ₸<span>/ сеанс</span></div>
+            <button class="service-card__btn" aria-label="Подробнее">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M8 3l5 5-5 5"/></svg>
+            </button>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Bottom CTA -->
+      <div class="services__bottom">
+        <p class="services__bottom-text">Не нашла нужную услугу? Мы подберём индивидуально.</p>
+        <a href="#booking" class="btn btn--orange">Записаться на консультацию</a>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    // ========== STICKY HEADER ==========
+    const header = document.getElementById('header');
+    const onScroll = () => {
+      header.classList.toggle('header--scrolled', window.scrollY > 10);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // ========== BURGER / DRAWER ==========
+    const burger  = document.getElementById('burger');
+    const drawer  = document.getElementById('drawer');
+    const overlay = document.getElementById('overlay');
+
+    const openDrawer = () => {
+      burger.classList.add('is-open');
+      drawer.classList.add('is-open');
+      overlay.classList.add('is-open');
+      burger.setAttribute('aria-expanded', 'true');
+      drawer.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeDrawer = () => {
+      burger.classList.remove('is-open');
+      drawer.classList.remove('is-open');
+      overlay.classList.remove('is-open');
+      burger.setAttribute('aria-expanded', 'false');
+      drawer.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    };
+
+    burger.addEventListener('click', () => {
+      burger.classList.contains('is-open') ? closeDrawer() : openDrawer();
+    });
+
+    overlay.addEventListener('click', closeDrawer);
+
+    document.querySelectorAll('[data-close-drawer]').forEach(el => {
+      el.addEventListener('click', closeDrawer);
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeDrawer();
+    });
+
+    // ========== BLOCK 4: SERVICES REVEAL ==========
+    const serviceCards = document.querySelectorAll('.service-card');
+    const cardObs = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          const idx = [...serviceCards].indexOf(entry.target);
+          setTimeout(() => {
+            entry.target.classList.remove('card-hidden');
+            entry.target.classList.add('card-visible');
+          }, idx * 80);
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    serviceCards.forEach(c => cardObs.observe(c));
+
+    // ========== SERVICES HEADER REVEAL ==========
+    const svcHeaderEls = document.querySelectorAll('.services__header-reveal');
+    const svcHeaderObs = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('is-visible'), i * 100);
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    svcHeaderEls.forEach(el => svcHeaderObs.observe(el));
+
+    // ========== 3D TILT EFFECT ==========
+    const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+
+    function applyTilt(card) {
+      const iconWrap = card.querySelector('.service-card__icon-wrap');
+
+      card.addEventListener('mousemove', e => {
+        if (isMobile()) return;
+        const rect = card.getBoundingClientRect();
+        const cx = rect.left + rect.width  / 2;
+        const cy = rect.top  + rect.height / 2;
+        const dx = (e.clientX - cx) / (rect.width  / 2);
+        const dy = (e.clientY - cy) / (rect.height / 2);
+        const rotX = -dy * 10;
+        const rotY =  dx * 10;
+        card.style.transform =
+          `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.03,1.03,1.03)`;
+        if (iconWrap) {
+          iconWrap.style.transform =
+            `translateZ(36px) rotateX(${-rotX * 0.4}deg) rotateY(${-rotY * 0.4}deg)`;
+        }
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(900px) rotateX(0) rotateY(0) scale3d(1,1,1)';
+        card.style.transition = 'transform 0.5s cubic-bezier(0.23,1,0.32,1), box-shadow 0.3s ease';
+        if (iconWrap) {
+          iconWrap.style.transform = 'translateZ(0)';
+          iconWrap.style.transition = 'transform 0.5s cubic-bezier(0.23,1,0.32,1)';
+        }
+      });
+
+      card.addEventListener('mouseenter', () => {
+        card.style.transition = 'transform 0.1s ease, box-shadow 0.3s ease';
+        if (iconWrap) iconWrap.style.transition = 'transform 0.1s ease, background 0.3s ease';
+      });
+    }
+
+    serviceCards.forEach(applyTilt);
+
+    // ========== FILTER TABS ==========
+    const filterBtns = document.querySelectorAll('.services__filter-btn');
+    const allCards   = [...document.querySelectorAll('.service-card')];
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // update active tab
+        filterBtns.forEach(b => { b.classList.remove('is-active'); b.setAttribute('aria-selected','false'); });
+        btn.classList.add('is-active');
+        btn.setAttribute('aria-selected','true');
+
+        const filter = btn.dataset.filter;
+
+        allCards.forEach((card, i) => {
+          const match = filter === 'all' || card.dataset.category === filter;
+
+          // fade out
+          card.classList.add('is-filtering');
+          card.style.display = 'block';
+
+          setTimeout(() => {
+            if (!match) {
+              card.style.display = 'none';
+              card.classList.remove('is-filtering');
+            } else {
+              card.style.display = 'block';
+              setTimeout(() => {
+                card.classList.remove('is-filtering');
+              }, 50 + i * 50);
+            }
+          }, 300);
+        });
+      });
+    });
+
+    // ========== BLOCK 3: CANVAS PARTICLES ==========
+    const canvas = document.getElementById('missionCanvas');
+    const ctx    = canvas.getContext('2d');
+    let W, H, mouse = { x: -999, y: -999 };
+    const particles = [];
+    const MAX_AMBIENT = 60;
+
+    function resize() {
+      const section = document.getElementById('mission');
+      W = canvas.width  = section.offsetWidth;
+      H = canvas.height = section.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    class Particle {
+      constructor(x, y, type = 'ambient') {
+        this.x  = x ?? Math.random() * W;
+        this.y  = y ?? Math.random() * H;
+        this.type = type; // 'ambient' | 'trail' | 'burst'
+
+        if (type === 'ambient') {
+          this.r    = Math.random() * 2.5 + 0.8;
+          this.vx   = (Math.random() - 0.5) * 0.4;
+          this.vy   = (Math.random() - 0.5) * 0.4;
+          this.alpha = Math.random() * 0.5 + 0.15;
+          this.dAlpha = 0;
+          this.life = 1;
+          this.color = Math.random() > 0.45 ? '#FF6B00' : '#FFFFFF';
+          this.shape = Math.random() > 0.6 ? 'diamond' : 'circle';
+        } else if (type === 'trail') {
+          this.r    = Math.random() * 3 + 1.5;
+          const ang = Math.random() * Math.PI * 2;
+          const spd = Math.random() * 1.2;
+          this.vx   = Math.cos(ang) * spd;
+          this.vy   = Math.sin(ang) * spd - 0.8;
+          this.alpha = 0.85;
+          this.dAlpha = -(0.03 + Math.random() * 0.03);
+          this.life = 1;
+          this.color = Math.random() > 0.4 ? '#FF6B00' : `rgba(255,255,255,0.8)`;
+          this.shape = 'circle';
+        } else { // burst
+          this.r    = Math.random() * 4 + 2;
+          const ang = Math.random() * Math.PI * 2;
+          const spd = Math.random() * 7 + 2;
+          this.vx   = Math.cos(ang) * spd;
+          this.vy   = Math.sin(ang) * spd;
+          this.alpha = 1;
+          this.dAlpha = -(0.018 + Math.random() * 0.015);
+          this.life = 1;
+          this.color = ['#FF6B00','#FF9A40','#FFD700','#FFFFFF'][Math.floor(Math.random()*4)];
+          this.shape = Math.random() > 0.5 ? 'circle' : 'diamond';
+          this.gravity = 0.12;
+        }
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.gravity) this.vy += this.gravity;
+        this.alpha += this.dAlpha;
+        if (this.type === 'ambient') {
+          if (this.x < 0) this.x = W;
+          if (this.x > W) this.x = 0;
+          if (this.y < 0) this.y = H;
+          if (this.y > H) this.y = 0;
+        }
+      }
+
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, this.alpha);
+        ctx.fillStyle = this.color;
+        if (this.shape === 'diamond') {
+          ctx.translate(this.x, this.y);
+          ctx.rotate(Math.PI / 4);
+          ctx.fillRect(-this.r, -this.r, this.r * 2, this.r * 2);
+        } else {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+          ctx.fill();
+          // glow for trail/burst
+          if (this.type !== 'ambient') {
+            ctx.shadowColor = this.color;
+            ctx.shadowBlur  = this.r * 4;
+            ctx.fill();
+          }
+        }
+        ctx.restore();
+      }
+
+      isDead() { return this.alpha <= 0; }
+    }
+
+    // Init ambient particles
+    for (let i = 0; i < MAX_AMBIENT; i++) particles.push(new Particle(null, null, 'ambient'));
+
+    // Mouse trail throttle
+    let lastTrail = 0;
+
+    function animate() {
+      ctx.clearRect(0, 0, W, H);
+
+      // Draw subtle connecting lines for nearby ambient particles
+      for (let i = 0; i < particles.length; i++) {
+        if (particles[i].type !== 'ambient') continue;
+        for (let j = i + 1; j < particles.length; j++) {
+          if (particles[j].type !== 'ambient') continue;
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 90) {
+            ctx.save();
+            ctx.strokeStyle = '#FF6B00';
+            ctx.globalAlpha = (1 - dist / 90) * 0.06;
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+            ctx.restore();
+          }
+        }
+      }
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        particles[i].update();
+        particles[i].draw();
+        if (particles[i].isDead()) {
+          if (particles[i].type === 'ambient') {
+            // respawn ambient
+            particles[i] = new Particle(null, null, 'ambient');
+          } else {
+            particles.splice(i, 1);
+          }
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Trail on mousemove
+    const section3 = document.getElementById('mission');
+    section3.addEventListener('mousemove', e => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+      const now = Date.now();
+      if (now - lastTrail > 25) {
+        for (let i = 0; i < 3; i++) particles.push(new Particle(mouse.x, mouse.y, 'trail'));
+        lastTrail = now;
+      }
+    });
+
+    // Burst on click
+    section3.addEventListener('mousedown', e => {
+      const rect = canvas.getBoundingClientRect();
+      const cx = e.clientX - rect.left;
+      const cy = e.clientY - rect.top;
+      for (let i = 0; i < 40; i++) particles.push(new Particle(cx, cy, 'burst'));
+    });
+
+    // Touch support
+    let lastTouch = 0;
+    section3.addEventListener('touchmove', e => {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const t = e.touches[0];
+      const tx = t.clientX - rect.left;
+      const ty = t.clientY - rect.top;
+      const now = Date.now();
+      if (now - lastTouch > 30) {
+        for (let i = 0; i < 4; i++) particles.push(new Particle(tx, ty, 'trail'));
+        lastTouch = now;
+      }
+    }, { passive: false });
+
+    section3.addEventListener('touchstart', e => {
+      const rect = canvas.getBoundingClientRect();
+      const t = e.touches[0];
+      const tx = t.clientX - rect.left;
+      const ty = t.clientY - rect.top;
+      for (let i = 0; i < 30; i++) particles.push(new Particle(tx, ty, 'burst'));
+    }, { passive: true });
+
+    // ========== SCROLL-TRIGGERED BG TRANSITION ==========
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        document.body.classList.toggle('dark-mode', entry.isIntersecting);
+      });
+    }, { threshold: 0.2 });
+    observer.observe(section3);
+
+    // ========== TEXT REVEAL (Intersection Observer) ==========
+    const revealEls = document.querySelectorAll('.mission__reveal');
+    const revealObs = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('is-visible'), i * 120);
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(el => revealObs.observe(el));
+
+  </script>
+</body>
+</html>
